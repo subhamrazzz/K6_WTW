@@ -19,7 +19,7 @@ export let options = {
   // },
 
   duration: "10s",
-  vus: 1,
+  vus: 2,
 
   thresholds: {
     http_req_failed: ["rate<0.01"], // http errors should be less than 1%
