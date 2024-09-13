@@ -18,7 +18,7 @@ export let options = {
   //   },
   // },
 
-  duration: "20s",
+  duration: "10s",
   vus: 4,
 
   thresholds: {
