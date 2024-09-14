@@ -17,7 +17,7 @@ const scenarios = {
   },
   ramping_load: {
     executor: "ramping-vus",
-    startVUs: 1,
+    startVUs: 2,
     stages: [
       { duration: "10s", target: 5 },
       { duration: "20s", target: 5 },
