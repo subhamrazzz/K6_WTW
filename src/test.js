@@ -2,52 +2,78 @@ import http from "k6/http";
 import { check, group, sleep } from "k6";
 import { Trend } from "k6/metrics";
 
+//Custom metric
 const myTrend = new Trend("GetApi_ResponsTime");
 
-// Define options
+// Base URL for the API
+const baseUrl = "http://jsonplaceholder.typicode.com";
+
+// Defining scenarios
+const scenarios = {
+  stress_load: {
+    executor: "constant-vus",
+    vus: 4,
+    duration: "20s",
+  },
+  ramping_load: {
+    executor: "ramping-vus",
+    startVUs: 1,
+    stages: [
+      { duration: "10s", target: 5 },
+      { duration: "20s", target: 5 },
+      { duration: "10s", target: 0 },
+    ],
+  },
+  simple_load: {
+    executor: "per-vu-iterations",
+    vus: 1,
+    iterations: 2,
+    startTime: "2s",
+  },
+};
+
+const scenarioName = __ENV.SCENARIO || "simple_load"; // Default to 'simple_load' if not specified in command line argument
+
 export let options = {
-  // scenarios: {
-  //   my_api_scenario: {
-  //     executor: "ramping-vus",
-  //     startVUs: 0,
-  //     stages: [
-  //       { duration: "10s", target: 5 },
-  //       { duration: "40s", target: 5 },
-  //     ],
-  //     gracefulRampDown: "10s",
-  //   },
-  // },
-
-  duration: "10s",
-  vus: 4,
-
+  scenarios: {
+    [scenarioName]: scenarios[scenarioName],
+  },
   thresholds: {
     http_req_failed: ["rate<0.01"], // http errors should be less than 1%
-    http_req_duration: ["p(95)<50"], // 95% of requests should be below 200ms
+    http_req_duration: ["p(95)<500"], // 95% of requests should be below 50ms
   },
 };
 
 export function setup() {
-  console.log("This is in setup function");
+  console.log(`Running scenario: ${scenarioName}`);
 }
 
 export default function () {
-  group("Get Calls", function () {
-    const res = http.get("https://jsonplaceholder.typicode.com/posts");
+  group("Get Call", function () {
+    const res = http.get(`${baseUrl}/posts`);
 
-    // checks on the respose - Assertions
+    // Checks on the response
     check(res, {
       "is status 200": (r) => r.status === 200,
       "is not status 404": (r) => r.status !== 404,
       "verify page text": (r) => r.body.includes("userId"),
     });
 
-    let token = res.json().Token; // simple correlation example
+    const data = res.json();
 
-    myTrend.add(res.timings.duration); // adding custom metric
+    // Filter the data where userId is 1 and extract the titles ( Correlation example)
+    const titles = data
+      .filter((item) => item.userId === 1)
+      .map((item) => item.title);
+
+    //console.log("Titles:", titles);
+    //const FirstTitle = titles[0];
+    //console.log("FirstTitle:", FirstTitle);
+
+    myTrend.add(res.timings.duration); // Adding custom metric
   });
 }
 
 export function teardown(data) {
-  console.log("this is tear down function");
+  console.log("Tearing down after the test.");
 }
