@@ -69,6 +69,7 @@ npm test
 **Overview**
 
 The CI pipeline is configured using GitHub Actions to automate the build and test processes for this project. It ensures that tests are executed automatically on code changes.
+Refer `.github\workflows\k6-test.yml`
 
 ## Content and usage
 
@@ -107,7 +108,7 @@ This configuration tells Webpack not to bundle K6 modules but to treat them as e
 
 Ensure K6 is properly installed in the GitHub Actions environment.
 
-If K6 is not installed through `npm install` in the GitHub Actions runner, it may be due to the fact that K6 cannot be managed as a dependency via `package.json`. To address this issue, an additional step has been added to `.github/workflows/k6-test.yml` to install K6 separately after `npm install` is finished.
+You may face issue with K6 not getting installed through `npm install` in the GitHub Actions runner. To address this issue, I have added one more step to `.github/workflows/k6-test.yml` to install K6 separately after `npm install` is finished.
 
 Here is the added step for installing K6:
 
@@ -120,4 +121,4 @@ Here is the added step for installing K6:
     sudo apt-get install k6
 ```
 
-Make sure to modify the K6 installation commands according to the runner type you are using (e.g., Windows, macOS, etc.).
+Make sure to modify the K6 installation commands according to the runner type you are using (e.g.,linux, Windows, macOS, etc.).
