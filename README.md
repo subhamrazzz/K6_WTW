@@ -31,6 +31,7 @@ GitHub Actions Workflow: Automates the testing process. Includes steps for insta
 
 ## Running Locally ( Prerequisite: Should have a stable version of node.js pre-installed)
 
+```bash
 1. **Clone the Repository**
 
    git clone https://github.com/subhamrazzz/K6_WTW.git
@@ -50,6 +51,7 @@ npm run build
 5. **Run the Tests**
 
 npm test
+```
 
 ## Github actions CI Pipeline
 
@@ -57,7 +59,7 @@ npm test
 
 The CI pipeline is configured using GitHub Actions to automate the build and test processes for this project. It ensures that tests are executed automatically on code changes.
 
-## COntent and usage
+## Content and usage
 
 - **Trigger**: The workflow is triggered on `push` and `pull_request` events to the `master` branch. This means the CI pipeline runs whenever changes are pushed to the `master` branch or when a pull request targeting `master` is created or updated.
 
@@ -86,18 +88,13 @@ externals: {
 'k6': 'commonjs k6',
 'k6/metrics': 'commonjs k6/metrics',
 },
+```
 
 This configuration tells Webpack not to bundle K6 modules but to treat them as external dependencies that K6 will provide at runtime.
 
-
-
 ### K6 installation issue in GitHub Actions environment
-
 
 Ensure K6 is properly installed in the GitHub Actions environment.
 I tried putting it in package.json dependencies but it doesn't seems to get installed in the Github Actions runner through "npm install".
 To solve this issue I have added an extra step in ".github/workflows/k6-test.yml" to additionally install K6 after npm install is finished.
 Make sure to modify the K6 installation commands according to the runner type you are using (e.g., Windows, macOS, etc.).
-
-
-```
