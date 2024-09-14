@@ -70,7 +70,7 @@ export default function () {
     //const FirstTitle = titles[0];
     //console.log("FirstTitle:", FirstTitle);
 
-    myTrend.add(res.timings.duration); // Adding custom metric
+    myTrend.add(res.timings.duration); // custom trend metric
   });
 }
 
