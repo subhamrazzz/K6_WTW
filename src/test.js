@@ -23,6 +23,7 @@ export let options = {
     http_req_duration: ["p(95)<400"], // 95% of requests should be below 400ms
     ResponseSize: ["value<28000"], // Response content size less that bytes
   },
+  //minIterationDuration: '10s',
 };
 
 //Setup function
