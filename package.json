@@ -7,6 +7,7 @@
     "simple_loadtest": "k6 run -e SCENARIO=simple_load dist/test.bundle.js",
     "ramping_loadtest": "k6 run -e SCENARIO=ramping_load dist/test.bundle.js",
     "stress_loadtest": "k6 run -e SCENARIO=stress_load dist/test.bundle.js",
+    "controlled_loadtest": "k6 run -e SCENARIO=control_load dist/test.bundle.js",
     "test": "k6 run dist/test.bundle.js"
   },
   "keywords": [],

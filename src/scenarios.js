@@ -1,11 +1,13 @@
 export const scenarios = {
-  stress_load: {
-    executor: "constant-vus",
-    vus: 4,
-    duration: "20s",
+  simple_load: {
+    executor: "per-vu-iterations", // each VUs with complete defined number of iterations.
+    vus: 1,
+    iterations: 10,
+    startTime: "2s",
   },
+
   ramping_load: {
-    executor: "ramping-vus",
+    executor: "ramping-vus", // users with ramp-up and ramp-down based on defined scenario
     startVUs: 1,
     stages: [
       { duration: "10s", target: 5 },
@@ -13,10 +15,17 @@ export const scenarios = {
       { duration: "10s", target: 0 },
     ],
   },
-  simple_load: {
-    executor: "per-vu-iterations",
-    vus: 1,
-    iterations: 10,
-    startTime: "2s",
+
+  stress_load: {
+    executor: "constant-vus", // contant number of VUs will keep running for defined duration
+    vus: 4,
+    duration: "20s",
+  },
+
+  control_load: {
+    executor: "externally-controlled", // can pause, resume and scale load test during runtime.
+    vus: 3,
+    maxVUs: 50,
+    duration: "10m",
   },
 };
