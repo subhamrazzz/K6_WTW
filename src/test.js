@@ -20,7 +20,7 @@ export let options = {
   },
   thresholds: {
     http_req_failed: ["rate<0.01"], // http errors should be less than 1%
-    http_req_duration: ["p(95)<500"], // 95% of requests should be below 500ms
+    http_req_duration: ["p(95)<400"], // 95% of requests should be below 400ms
     ResponseSize: ["value<28000"], // Response content size less that bytes
   },
 };

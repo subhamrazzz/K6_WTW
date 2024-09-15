@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This repository provides setup guidelines for performance testing using the K6 framework. The setup includes managing dependencies with npm, bundling K6 scripts using Webpack, and automating tests with GitHub Actions.
+This repository provides setup guidelines for performance testing using the K6 framework. The setup includes managing dependencies with npm, bundling K6 scripts using Webpack, and automating tests with GitHub Actions workflow.
 
 ### Contents
 
