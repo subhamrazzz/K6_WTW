@@ -6,7 +6,7 @@ import { scenarios } from "./scenarios.js"; // Importing scenarios from the scen
 //Custom metric
 const myTrend = new Trend("GetApi_ResponsTime"); // custom metric to track response time
 const successCounter = new Counter("GetApi_successes");
-const GaugeResponseSize = new Gauge("ResponseSize");
+const gaugeResponseSize = new Gauge("ResponseSize");
 
 // Base URL
 const baseUrl = "http://jsonplaceholder.typicode.com";
@@ -54,7 +54,7 @@ export default function () {
 
     myTrend.add(res.timings.duration); // custom trend metric
     successCounter.add(res.status === 200); //custom counter metric
-    GaugeResponseSize.add(res.body.length); // custom guage metric
+    gaugeResponseSize.add(res.body.length); // custom guage metric
   });
 }
 
