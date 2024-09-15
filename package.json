@@ -16,7 +16,7 @@
   "dependencies": {
     "k6": "^0.0.0"
   },
-  "devDependencies": {
+  "Dependencies": {
     "k6": "^0.0.0",
     "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4"
