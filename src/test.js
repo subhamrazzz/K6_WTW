@@ -1,9 +1,11 @@
 import http from "k6/http";
 import { check, group, sleep } from "k6";
-import { Trend } from "k6/metrics";
+import { Trend, Counter, Gauge } from "k6/metrics";
 
 //Custom metric
-const myTrend = new Trend("GetApi_ResponsTime");
+const myTrend = new Trend("GetApi_ResponsTime"); // custom metric to track response time
+const successCounter = new Counter("GetApi_successes");
+const GaugeResponseSize = new Gauge("ResponseSize");
 
 // Base URL for the API
 const baseUrl = "http://jsonplaceholder.typicode.com";
@@ -27,7 +29,7 @@ const scenarios = {
   simple_load: {
     executor: "per-vu-iterations",
     vus: 1,
-    iterations: 2,
+    iterations: 10,
     startTime: "2s",
   },
 };
@@ -40,7 +42,8 @@ export let options = {
   },
   thresholds: {
     http_req_failed: ["rate<0.01"], // http errors should be less than 1%
-    http_req_duration: ["p(95)<500"], // 95% of requests should be below 50ms
+    http_req_duration: ["p(95)<500"], // 95% of requests should be below 500ms
+    ResponseSize: ["value<4000"], // Response content size less that bytes
   },
 };
 
@@ -71,6 +74,8 @@ export default function () {
     //console.log("FirstTitle:", FirstTitle);
 
     myTrend.add(res.timings.duration); // custom trend metric
+    successCounter.add(res.status === 200); //custom counter metric
+    GaugeResponseSize.add(res.body.length); // custom guage metric
   });
 }
 
