@@ -38,7 +38,7 @@ export default function () {
     // Checks on the response
     check(res, {
       "is status 200": (r) => r.status === 200,
-      "is not status 404": (r) => r.status !== 404,
+      "is status not 404": (r) => r.status !== 404,
       "verify page text": (r) => r.body.includes("userId"),
     });
 
