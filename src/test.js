@@ -1,39 +1,17 @@
 import http from "k6/http";
 import { check, group, sleep } from "k6";
 import { Trend, Counter, Gauge } from "k6/metrics";
+import { scenarios } from "./scenarios.js"; // Importing scenarios from the scenarios.js file
 
 //Custom metric
 const myTrend = new Trend("GetApi_ResponsTime"); // custom metric to track response time
 const successCounter = new Counter("GetApi_successes");
 const GaugeResponseSize = new Gauge("ResponseSize");
 
-// Base URL for the API
+// Base URL
 const baseUrl = "http://jsonplaceholder.typicode.com";
 
-// Defining scenarios
-const scenarios = {
-  stress_load: {
-    executor: "constant-vus",
-    vus: 4,
-    duration: "20s",
-  },
-  ramping_load: {
-    executor: "ramping-vus",
-    startVUs: 1,
-    stages: [
-      { duration: "10s", target: 5 },
-      { duration: "20s", target: 5 },
-      { duration: "10s", target: 0 },
-    ],
-  },
-  simple_load: {
-    executor: "per-vu-iterations",
-    vus: 1,
-    iterations: 10,
-    startTime: "2s",
-  },
-};
-
+//Loading opted test scenario
 const scenarioName = __ENV.SCENARIO || "simple_load"; // Default to 'simple_load' if not specified in command line argument
 
 export let options = {
@@ -47,6 +25,7 @@ export let options = {
   },
 };
 
+//Setup function
 export function setup() {
   console.log(`Running scenario: ${scenarioName}`);
 }
@@ -79,6 +58,7 @@ export default function () {
   });
 }
 
+//Teardown function
 export function teardown(data) {
   console.log("Tearing down after the test.");
 }
