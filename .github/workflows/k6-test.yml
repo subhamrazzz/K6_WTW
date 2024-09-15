@@ -4,13 +4,16 @@ on:
   push:
     branches:
       - master
+      # Trigger the workflow on push to the master branch
   pull_request:
     branches:
       - master
+      # Trigger the workflow on pull requests to the master branch
 
 jobs:
   k6-test:
     runs-on: ubuntu-latest
+    # Define the environment in which the job will run
 
     steps:
       - name: Checkout code
@@ -26,14 +29,26 @@ jobs:
 
       - name: Install k6
         run: |
+          # Import the GPG key used to sign the k6 package
           sudo gpg -k
           sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          # Add k6 repository to the APT sources
           echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          # Update package list and install k6
           sudo apt-get update
           sudo apt-get install k6
 
       - name: Build test script
         run: npm run build
 
-      - name: Run K6 tests
+      - name: Run K6 tests (Simple_load)
         run: npm test
+
+      # - name: Run K6 tests (Controlled_loadtest)
+      #   run: npm run controlled_loadtest
+
+      # - name: Run K6 tests (Spike_loadtest)
+      #   run: npm run spike_loadtest
+
+      # - name: Run K6 tests (Ramping_loadtest)
+      #   run: npm run ramping_loadtest
